@@ -10,6 +10,7 @@ function App() {
   const [currentReading, setcurrentReading] = useState()
   const [pastReading, setPastReading] = useState()
   const [currentTime, setcurrentTime] = useState()
+  const NSURL = process.env.REACT_APP_NS_URL
 
   useEffect(() => {
     document.title = currentReading
@@ -18,8 +19,9 @@ function App() {
   useEffect(() => {
 
     function getReadings() {
+      console.log(NSURL)
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      const url = "https://NS_URL/api/v1/entries.json";
+      const url = "https://NSURL.com/api/v1/entries.json";
       //env
       fetch(proxyurl + url)
         .then(response => response.json())
