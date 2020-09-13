@@ -3,14 +3,12 @@ import './App.css';
 import DisplayReading from './components/DisplayReading'
 import TreatmentProfile from './components/TreatmentProfile'
 import Notifications from './components/Notifications'
-import Button from 'react-bootstrap/Button';
-import Jumbotron from 'react-bootstrap/Jumbotron'
-import Container from 'react-bootstrap/Container'
 function App() {
   const [currentReading, setcurrentReading] = useState()
   const [pastReading, setPastReading] = useState()
   const [currentTime, setcurrentTime] = useState()
-  const NSURL = process.env.REACT_APP_NS_URL
+
+  const NSURL = process.env.REACT_APP_NS
 
   useEffect(() => {
     document.title = currentReading
@@ -19,10 +17,8 @@ function App() {
   useEffect(() => {
 
     function getReadings() {
-      console.log(NSURL)
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      const url = "https://NSURL.com/api/v1/entries.json";
-      //env
+      const url = "https://" + NSURL + "/api/v1/entries.json";
       fetch(proxyurl + url)
         .then(response => response.json())
         .then(data => {
@@ -37,7 +33,7 @@ function App() {
           setcurrentTime(time)
         })
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
-      //catch nightscout server down
+      //TODO:catch nightscout server down
       //catch no new reading retro
     }
 
@@ -53,13 +49,8 @@ function App() {
 
   return (
     <div >
-
       <Notifications
         reading={currentReading} />
-
-
-
-
       <div className="App-header">
         <DisplayReading
           reading={currentReading}
@@ -68,8 +59,6 @@ function App() {
         <TreatmentProfile
           reading={currentReading} />
       </div>
-
-
     </div>
   );
 }
