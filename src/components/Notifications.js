@@ -39,14 +39,29 @@ function Notifications(props) {
                 </h1>
             </div>
 
+
         return (
             banner
         )
+    }
+    function nightscoutDownAlert() {
+        let retroBanner =
+            <div class="alert Alert-custom" role="alert" style={{
+                background: "545b62",
+                color: "545b62",
+                width: "auto",
+                margin: "auto"
+            }}>
+                <strong style={{ color: 'red' }}>Last reading</strong> detected {props.diffReading} minutes ago.
+          </div>
+
+        return retroBanner
     }
 
     return (
         <div>
             {notify ? notificationHeader() : null}
+            {props.retroBG === "true" ? nightscoutDownAlert() : null}
         </div>
 
     )

@@ -4,9 +4,11 @@ import DisplayReading from './components/DisplayReading'
 import TreatmentProfile from './components/TreatmentProfile'
 import Notifications from './components/Notifications'
 function App() {
-  const [currentReading, setcurrentReading] = useState()
+  const [currentReading, setCurrentReading] = useState()
   const [pastReading, setPastReading] = useState()
-  const [currentTime, setcurrentTime] = useState()
+  const [currentTime, setCurrentTime] = useState()
+  const [diffOfLastReading, setDiffOfLastReading] = useState()
+  const [isNSDown, setIsNSDown] = useState()
 
   const NSURL = process.env.REACT_APP_NS
 
@@ -22,45 +24,67 @@ function App() {
       fetch(proxyurl + url)
         .then(response => response.json())
         .then(data => {
+
           const reading = (data[0].sgv / 18).toFixed(1);
           const pastBG = (data[1].sgv / 18).toFixed(2);
 
-          var t = new Date(data[0].dateString);
-          const time = t.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+          const currentReadingTime = new Date(data[0].dateString);
+          const time = currentReadingTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
 
-          setcurrentReading(reading);
+          let testDown = 15
+
+          setIsNSDown((lastReadingTime(currentReadingTime) >= testDown) ? "true" : "false")
+          setDiffOfLastReading(lastReadingTime(currentReadingTime))
+          setCurrentReading(reading);
           setPastReading(pastBG)
-          setcurrentTime(time)
+          setCurrentTime(time)
+
+
+
         })
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
       //TODO:catch nightscout server down
-      //catch no new reading retro
+      //set no new reading in header and display box
     }
 
     getReadings()
-
     const interval = setInterval(() => getReadings(), 300000)
     return () => {
       clearInterval(interval)
     }
   }, [])
 
-
+  function lastReadingTime(currentTime) {
+    const localTime = new Date()
+    let diff = Math.floor((((localTime - currentTime) % 86400000) % 3600000) / 60000)
+    // console.log("Local: " + localTime);
+    // console.log("Current: " + currentTime);
+    // console.log("DIFF: " + diff);
+    return diff
+  }
 
   return (
     <div >
       <Notifications
-        reading={currentReading} />
+        reading={currentReading}
+        retroBG={isNSDown}
+        diffReading={diffOfLastReading}
+      />
       <div className="App-header">
         <DisplayReading
           reading={currentReading}
           pastBG={pastReading}
-          time={currentTime} />
+          time={currentTime}
+          retroBG={isNSDown}
+        />
         <TreatmentProfile
-          reading={currentReading} />
+          reading={currentReading}
+        />
       </div>
     </div>
   );
+
+
 }
 
 export default App;
