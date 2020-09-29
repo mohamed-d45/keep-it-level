@@ -2,7 +2,7 @@
 
 > An application used to monitor blood glucose levels for patients with Diabetes. 
 
->Uses the Nightscout REST API to display real-time blood glucose data.
+>Uses the NightScout REST API to display real-time blood glucose data.
 
 ## Project Status
 This project is currently in development. Users can add their NightScout URL to display glucose levels. Functionality to give users notifications on glucose trend levels is in progress.  
