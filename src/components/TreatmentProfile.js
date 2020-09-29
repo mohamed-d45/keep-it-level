@@ -123,7 +123,7 @@ function TreatmentProfile(props) {
             {profile ? <div>
 
 
-                <h6>TODO: info</h6>
+                {/* <h6>TODO: info</h6> */}
                 {/* <input
                         type="text"
                         placeholder="Enter Total Daily Dose"

@@ -33,6 +33,10 @@ function App() {
 
           let testDown = 15
 
+          // const testHigh = 11.2
+          // const testLow = 3.8
+          // const testNormal = 6.5
+
           setIsNSDown((lastReadingTime(currentReadingTime) >= testDown) ? "true" : "false")
           setDiffOfLastReading(lastReadingTime(currentReadingTime))
           setCurrentReading(reading);
